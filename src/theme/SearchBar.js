@@ -1,32 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import BrowserOnly from '@docusaurus/BrowserOnly';
+import { InkeepSearchBar, InkeepShadow } from '@inkeep/widgets';
+import { useColorMode } from '@docusaurus/theme-common';
+import React from 'react';
 import useInkeepSettings from '../utils/useInkeepSettings';
-import '@inkeep/widgets-migration/styles.css';
 
-export default function SearchBarWrapper() {
-  const [SearchBar, setSearchBar] = useState(null);
+export default function InkeepSearch() {
+	const { baseSettings, aiChatSettings } = useInkeepSettings();
+	const { colorMode } = useColorMode();
 
-  useEffect(() => {
-    (async () => {
-      const { InkeepSearchBar } = await import('@inkeep/widgets-migration');
-      setSearchBar(() => InkeepSearchBar);
-    })();
-  }, []);
+	const searchBarProps = { baseSettings, aiChatSettings };
 
-  const { baseSettings, aiChatSettings } = useInkeepSettings();
+	// Force color mode to be dictated by the one from Docusaurus
+	searchBarProps.baseSettings.theme = {
+		...searchBarProps.baseSettings.theme,
+		colorMode: {
+			...searchBarProps.baseSettings.theme.colorMode,
+			forcedColorMode: colorMode === 'dark' ? 'dark' : 'light'
+		}
+	};
 
-  const searchBarProps = {
-    baseSettings,
-    aiChatSettings,
-  };
-
-  return (
-    <div className="Inkeep-Search">
-      <BrowserOnly fallback={<div></div>}>
-        {() => {
-          return SearchBar ? <SearchBar {...searchBarProps} /> : <div></div>;
-        }}
-      </BrowserOnly>
-    </div>
-  );
+	return (
+		<div className="Inkeep-Search">
+			<InkeepShadow>
+				<InkeepSearchBar {...searchBarProps} />
+			</InkeepShadow>
+		</div>
+	);
 }

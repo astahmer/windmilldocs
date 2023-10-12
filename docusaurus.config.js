@@ -1,6 +1,7 @@
 // @ts-check
 // Note: type annotations allow type checking and IDEs autocompletion
 
+const path = require('path');
 const lightCodeTheme = require('prism-react-renderer/themes/github');
 const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
@@ -20,11 +21,24 @@ const config = {
 		inkeepCredentials: {
 			apiKey: '',
 			integrationId: '',
-			organizationId: '',
+			organizationId: ''
 		}
 	},
 
 	plugins: [
+		() => ({
+			name: 'dedupe-react',
+			configureWebpack() {
+				return {
+					resolve: {
+						alias: {
+							react: path.resolve(__dirname, './node_modules/react'),
+							'react-dom': path.resolve(__dirname, './node_modules/react-dom')
+						}
+					}
+				};
+			}
+		}),
 		async function myPlugin(context, options) {
 			return {
 				name: 'docusaurus-tailwindcss',

@@ -1,6 +1,5 @@
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import { InkeepAIChatSettings, InkeepWidgetBaseSettings } from '@inkeep/widgets-migration';
-
+import { InkeepAIChatSettings, InkeepWidgetBaseSettings } from '@inkeep/widgets';
 
 type InkeepIdentifierSettings = {
   apiKey: string;
